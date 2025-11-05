@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>連江縣 114 年度災害防救—評核填報表（表3）</title>
+<style>
+  :root{
+    --bg:#ffffff;
+    --card:#ffffff;
+    --muted:#64748b;
+    --text:#0f172a;
+    --accent:#2563eb;
+    --good:#16a34a;
+    --warn:#d97706;
+    --border:#e5e7eb;
+  }
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Noto Sans TC',Helvetica,Arial,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol';}
+  .container{max-width:1100px;margin:24px auto;padding:0 16px 48px;}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px 18px;margin-bottom:18px;box-shadow:0 4px 20px rgba(15,23,42,.06);}
+  h1{font-size:22px;margin:0 0 8px 0;letter-spacing:.3px;}
+  h2{font-size:18px;margin:18px 0 8px 0;}
+  .muted{color:var(--muted);font-size:14px;}
+  .row{display:flex;flex-wrap:wrap;gap:12px;}
+  .row > *{flex:1 1 240px;}
+  label{display:block;font-size:13px;margin-bottom:6px;color:#334155;}
+  input[type="text"], input[type="number"], select, textarea{
+    width:100%;background:#ffffff;border:1px solid var(--border);color:var(--text);
+    padding:10px 12px;border-radius:12px;outline:none;font-size:14px;
+  }
+  input[type="number"]{text-align:right;}
+  textarea{min-height:78px;resize:vertical;}
+  table{width:100%;border-collapse:collapse;border-spacing:0;}
+  thead th{font-size:12px;text-transform:uppercase;letter-spacing:.4px;color:#475569;text-align:left;padding:10px;background:#f8fafc;border-bottom:1px solid var(--border);}
+  tbody td{background:#ffffff;border-bottom:1px solid var(--border);padding:10px;}
+  tbody tr:last-child td{border-bottom:0;}
+  .badge{display:inline-block;padding:3px 8px;border-radius:999px;font-size:12px;line-height:1;border:1px solid var(--border);color:#334155;background:#f8fafc;}
+  .badge.warn{border-color:#fed7aa;color:#9a3412;background:#fff7ed;}
+  .badge.good{border-color:#bbf7d0;color:#065f46;background:#ecfdf5;}
+  .right{text-align:right;}
+  .controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+  button{
+    background:var(--accent);border:0;color:white;padding:10px 14px;border-radius:12px;font-weight:600;cursor:pointer;
+    box-shadow:0 6px 16px rgba(37,99,235,.25);
+  }
+  button.secondary{background:#f8fafc;color:#0f172a;box-shadow:none;border:1px solid var(--border);}
+  .totals{display:flex;gap:18px;flex-wrap:wrap;align-items:center;}
+  .kpi{background:#ffffff;border:1px solid var(--border);border-radius:14px;padding:12px 14px;min-width:160px;}
+  .kpi h3{margin:0;font-size:13px;color:#475569;font-weight:600;letter-spacing:.4px;}
+  .kpi .val{font-size:22px;font-weight:800;margin-top:6px;}
+  .note{font-size:12px;color:#64748b;}
+  .foot{font-size:12px;color:#64748b;margin-top:6px;}
+  .inline-help{font-size:12px;color:#64748b;}
+  .empty{padding:12px;color:#64748b;font-size:14px;}
+  /* Hidden printable/report container */
+  #reportContainer{position:fixed;left:-9999px;top:-9999px;opacity:0;}
+</style>
+<!-- PDF libs (CDN) -->
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+
+<style>
+.btn{padding:.5rem .9rem;border:1px solid #ccc;border-radius:8px;cursor:pointer}
+.btn:disabled{opacity:.6;cursor:not-allowed}
+.note{font-size:.9rem}
+</style>
+
+
+<style>
+.btn-upload{
+  background:#d32f2f; /* 消防紅 */
+  color:#fff;
+  border:none;
+  border-radius:10px;
+  padding:.5rem 1rem;
+  cursor:pointer;
+  box-shadow:0 2px 6px rgba(0,0,0,.18);
+  transition:transform .06s ease, box-shadow .12s ease, background .12s ease;
+}
+.btn-upload:hover{ background:#b71c1c; box-shadow:0 3px 10px rgba(0,0,0,.22); }
+.btn-upload:active{ transform:translateY(1px); box-shadow:0 1px 4px rgba(0,0,0,.2); }
+.upload-hint{
+  color:#d32f2f;
+  font-weight:700; /* B 粗體 */
+  margin-left:8px;
+  display:none;
+}
+/* 將「上傳分數」置於「儲存報告（PDF）」右側，維持 8px 間距 */
+#btnSaveReport + #btnUpload{ margin-left:8px; }
+</style>
+
+</head>
+<body>
+<div id='controls'>
+
+
+
+
+
+
+</div>
+
+<div class="container">
+  <div class="card">
+    <h1>連江縣 114 年度災害防救業務公所訪評暨強韌臺灣管考—評核填報表（表3）</h1>
+    <div class="muted">底分 100 分、加分上限 15 分（總分上限 115 分）。先選擇「評核單位（局處）」後，系統僅列出該局處需填列之指標。</div>
+    <div class="row" style="margin-top:14px;">
+      <div>
+        <label>受管考單位（鄉公所）</label>
+        <select id="fieldTownship">
+          <option value="">請選擇</option>
+          <option>南竿鄉公所</option>
+          <option>北竿鄉公所</option>
+          <option>莒光鄉公所</option>
+          <option>東引鄉公所</option>
+        </select>
+      </div>
+      <div>
+        <label>評核單位（局處）</label>
+        <select id="filterBureau">
+          <option value="">請選擇</option>
+          <option>消防局</option>
+          <option>民政社會處</option>
+          <option>教育處</option>
+          <option>警察局</option>
+          <option>環境資源局</option>
+          <option>衛生局</option>
+          <option>交通旅遊局</option>
+          <option>產業發展處</option>
+          <option>工務處</option>
+        </select>
+        <div class="inline-help">只顯示所選局處需填列的指標（含與該局處相關的加分項目）。</div>
+      </div>
+      <div>
+        <label>填報人</label>
+        <input id="fieldReporter" type="text" placeholder="姓名 / 分機" />
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="controls">
+      <button id="btnExpand">全部展開 / 收合說明</button><button id="btnUpload" class="btn btn-upload">上傳分數</button><span id="uploadHint" class="upload-hint">已送出（請至試算表查看）</span>
+      <button class="secondary" id="btnClear">清空分數</button>
+      <button id="btnSaveReport">儲存評核報告（PDF）</button>
+      <span class="note">各欄位可填 0～配分上限；加分也為選填分數。</span>
+    </div>
+    <div class="totals" style="margin-top:12px;">
+      <div class="kpi"><h3>基礎分（上限 100）</h3><div class="val" id="baseTotal">0</div></div>
+      <div class="kpi"><h3>加分（上限 15）</h3><div class="val" id="bonusTotal">0</div></div>
+      <div class="kpi"><h3>合計（上限 115）</h3><div class="val" id="grandTotal">0</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>指標填報</h2>
+    <div id="emptyHint" class="empty">尚未選擇評核單位（局處）。請先於上方選擇。</div>
+    <table>
+      <thead>
+        <tr>
+          <th style="width:12%">主項目</th>
+          <th style="width:18%">工作項目</th>
+          <th>評核內容 / 說明</th>
+          <th style="width:12%">評核單位</th>
+          <th style="width:10%">配分</th>
+          <th style="width:16%">填入分數</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+    <div class="foot">說明：加分項以 <span class="badge warn">加分</span> 標示；若未規劃演練之項目請填 0 分。</div>
+  </div>
+
+  <div class="card">
+    <h2>評核建議</h2>
+    <textarea id="fieldNotes" placeholder="請填寫對該鄉公所之改進建議、後續輔導方向或注意事項。"></textarea>
+  </div>
+</div>
+
+<!-- Hidden report container used for PDF rendering -->
+<div id="reportContainer"></div>
+
+<script>
+// ===== Data model =====
+const ITEMS = [
+  {id:"1-1", section:"一、縱橫推動", work:"1-1 建立考核項目輔導公所執行", unit:"消防局", max:10, type:"base",
+   desc:"配合縣府與協力機構輔導訪視，依出席層級給分（鄉長/秘書/課長）。"},
+  {id:"1-2", section:"一、縱橫推動", work:"1-2 辦理計畫交流座談會", unit:"消防局", max:3, type:"bonus",
+   desc:"【加分】參與座談或觀摩交流（鄉長 3、秘書 2、課長 1）。"},
+  {id:"1-3", section:"一、縱橫推動", work:"1-3 辦理各級災害防救教育訓練", unit:"消防局", max:5, type:"base",
+   desc:"派員出席本計畫教育訓練（3）；參與人員具課長層級以上（2）。"},
+  {id:"1-4a", section:"一、縱橫推動", work:"1-4 添購防救災裝備及設備（清冊/資料庫）", unit:"消防局", max:3, type:"base",
+   desc:"更新設備清冊或資料庫（名稱、數量、規格、存放地點、保管人、年限…）。"},
+  {id:"1-4b", section:"一、縱橫推動", work:"1-4 裝備運用於兵棋/實兵演練", unit:"消防局", max:3, type:"bonus",
+   desc:"【加分】將新添購裝備投入兵棋推演或實兵演練。"},
+
+  {id:"2-1", section:"二、據點整備與運作", work:"2-1 救災支援集結據點調查與合作", unit:"消防局", max:10, type:"base",
+   desc:"與維運單位簽訂合作意向/備忘錄/白皮書並共同規劃運作。"},
+  {id:"2-2", section:"二、據點整備與運作", work:"2-2 集結據點設施維護與管理", unit:"消防局", max:5, type:"base",
+   desc:"盤點據點資源並列冊管理。"},
+  {id:"2-3a", section:"二、據點整備與運作", work:"2-3 盤點避難收容處所能量及需求", unit:"民政社會處", max:3, type:"base",
+   desc:"評估避難收容處所人力、物資、設備等是否充足。"},
+  {id:"2-3b", section:"二、據點整備與運作", work:"2-3 盤點避難收容處所能量及需求", unit:"教育處", max:1, type:"base",
+   desc:"評估學校端避難收容處所資源。"},
+  {id:"2-4a", section:"二、據點整備與運作", work:"2-4 建立避難收容處所維運機制（手冊檢視與建議）", unit:"民政社會處", max:8, type:"base",
+   desc:"協助檢視維運手冊與管理辦法並提出修正建議。"},
+  {id:"2-4b", section:"二、據點整備與運作", work:"2-4 建立避難收容處所平時/災時運作機制", unit:"教育處", max:2, type:"base",
+   desc:"協助建立學校端之平時整備與災時開設運作機制。"},
+  {id:"2-5a", section:"二、據點整備與運作", work:"2-5 辦理避難收容處所開設演練（辦理本體）", unit:"民政社會處", max:6, type:"base",
+   desc:"依災損推估與維運計畫，辦理開設演練（若未規劃，請填 0）。"},
+  {id:"2-5b", section:"二、據點整備與運作", work:"2-5 開設演練納入特殊對象", unit:"教育處", max:2, type:"base",
+   desc:"情境納入身心障礙/慢性病患/獨老/觀光客/非官方語言者等。"},
+
+  {id:"3-1", section:"三、業務持續運作（BCP）", work:"3-1 評估災防重要業務事項", unit:"民政社會處", max:9, type:"base",
+   desc:"需求人力、緊急返回時程（1h/3h/24h/72h）、通訊中斷之通報機制。"},
+  {id:"3-2", section:"三、業務持續運作（BCP）", work:"3-2 建立業務持續運作計畫（更新）", unit:"民政社會處", max:3, type:"base",
+   desc:"協助更新公所 BCP。"},
+
+  {id:"4-4a", section:"四、相互支援與區域聯防", work:"4-4 區域聯防兵棋推演（情境規劃）", unit:"多單位", max:3, type:"bonus",
+   units:["民政社會處","消防局","警察局","環境資源局","衛生局","交通旅遊局","產業發展處","工務處","教育處"],
+   desc:"【加分】依災損推估辦理鄉級區域聯防兵棋推演。"},
+  {id:"4-4b", section:"四、相互支援與區域聯防", work:"4-4 納入不同單位/社會資源", unit:"多單位", max:3, type:"bonus",
+   units:["民政社會處","消防局","警察局","環境資源局","衛生局","交通旅遊局","產業發展處","工務處","教育處"],
+   desc:"【加分】納入防災士、軍警消、企業、醫療、學校、志工等。"},
+  {id:"4-4c", section:"四、相互支援與區域聯防", work:"4-4 納入特殊情境", unit:"多單位", max:3, type:"bonus",
+   units:["民政社會處","消防局","警察局","環境資源局","衛生局","交通旅遊局","產業發展處","工務處","教育處"],
+   desc:"【加分】重大活動、大量滯留、通訊中斷、大量傷病、跨縣市支援等。"},
+  {id:"4-5a", section:"四、相互支援與區域聯防", work:"4-5 修正鄉應變中心開設手冊流程", unit:"民政社會處", max:2, type:"bonus",
+   desc:"【加分】依更新機制修正作業手冊流程與程序（民政社會處 2 分）。"},
+  {id:"4-5b", section:"四、相互支援與區域聯防", work:"4-5 應變中心運作檢視（消防）", unit:"消防局", max:1, type:"bonus",
+   desc:"【加分】協助及檢視應變中心運作（消防局 1 分）。"},
+
+  {id:"5-1", section:"五、民間協作與企業合作", work:"5-1 強化社區防救災能量", unit:"消防局", max:6, type:"base",
+   desc:"參與韌性社區或其他社區活動、跨機構參與、更新村里災特與資源。"},
+  {id:"5-2a", section:"五、民間協作與企業合作", work:"5-2 納入防災士協作（民政）", unit:"民政社會處", max:1, type:"base",
+   desc:"邀請有意願協作之防災士納入防災協作中心（民政 1 分）。"},
+  {id:"5-2b", section:"五、民間協作與企業合作", work:"5-2 納入防災士協作（消防）", unit:"消防局", max:4, type:"base",
+   desc:"邀請有意願協作之防災士納入防災協作中心（消防 4 分）。"},
+  {id:"5-3a", section:"五、民間協作與企業合作", work:"5-3 防災協作中心（MOU/手冊/物資機制）", unit:"民政社會處", max:5, type:"base",
+   desc:"與民間或企業簽訂合作備忘錄等、協作中心手冊、災時民生物資管理。"},
+  {id:"5-3b", section:"五、民間協作與企業合作", work:"5-3 防災協作中心（消防）", unit:"消防局", max:3, type:"base",
+   desc:"協作中心相關機制（消防 3 分）。"},
+  {id:"5-3c", section:"五、民間協作與企業合作", work:"5-3 防災協作中心（產發）", unit:"產業發展處", max:3, type:"base",
+   desc:"協作中心相關機制（產發 3 分）。"},
+  {id:"5-4", section:"五、民間協作與企業合作", work:"5-4 推動企業社會責任（CSR）", unit:"產業發展處", max:8, type:"base",
+   desc:"企業參與社區防救災（編組/物資/演練等），或簽訂合作/認養。"},
+];
+
+function bureauMatches(item, selected){
+  if(!selected) return false;
+  if(item.unit === "多單位"){
+    return (item.units||[]).includes(selected);
+  }
+  return item.unit === selected;
+}
+
+function buildTable(){
+  const tbody = document.getElementById('tbody');
+  const empty = document.getElementById('emptyHint');
+  tbody.innerHTML = "";
+  const selected = document.getElementById('filterBureau').value;
+
+  const filtered = ITEMS.filter(it => bureauMatches(it, selected));
+  empty.style.display = filtered.length ? "none" : "block";
+
+  filtered.forEach(it=>{
+    const tr = document.createElement('tr');
+    tr.dataset.itemId = it.id;
+    tr.dataset.type = it.type;
+    tr.dataset.max = it.max;
+    tr.dataset.unit = it.unit;
+
+    const tdSec = document.createElement('td');
+    tdSec.textContent = it.section;
+    const tdWork = document.createElement('td');
+    tdWork.innerHTML = `<div style="font-weight:600">${it.work}</div>`;
+    const tdDesc = document.createElement('td');
+    tdDesc.innerHTML = `<div class="muted">${it.desc||""}</div>`;
+    tdDesc.className = "expander";
+
+    const tdUnit = document.createElement('td');
+    tdUnit.innerHTML = `<span class="badge">${it.unit==='多單位'?'見權責單位':it.unit}</span>${it.type==='bonus' ? ' <span class="badge warn">加分</span>':''}`;
+
+    const tdMax = document.createElement('td');
+    tdMax.className = "right";
+    tdMax.innerHTML = it.type==='bonus'
+      ? `<span class="badge warn">+${it.max}</span>`
+      : `<span class="badge good">${it.max}</span>`;
+
+    const tdInput = document.createElement('td');
+    tdInput.innerHTML = `<input type="number" min="0" max="${it.max}" step="1" value="0" data-input="score" />`;
+
+    tr.appendChild(tdSec);
+    tr.appendChild(tdWork);
+    tr.appendChild(tdDesc);
+    tr.appendChild(tdUnit);
+    tr.appendChild(tdMax);
+    tr.appendChild(tdInput);
+    tbody.appendChild(tr);
+  });
+  wireEvents();
+  computeTotals();
+}
+
+function wireEvents(){
+  document.querySelectorAll('input[data-input="score"]').forEach(inp=>{
+    inp.addEventListener('input', e=>{
+      const max = parseInt(e.target.getAttribute('max')||'0',10);
+      let v = parseInt(e.target.value||'0',10);
+      if(isNaN(v)) v = 0;
+      if(v<0) v=0;
+      if(v>max) v=max;
+      e.target.value = v;
+      computeTotals();
+    });
+  });
+}
+
+function computeTotals(){
+  let base = 0, bonus = 0;
+  document.querySelectorAll('#tbody tr').forEach(tr=>{
+    const type = tr.dataset.type;
+    const inp = tr.querySelector('input[data-input="score"]');
+    const v = inp ? parseInt(inp.value||'0',10) : 0;
+    if(type==='bonus'){ bonus += (isNaN(v)?0:v); } else { base += (isNaN(v)?0:v); }
+  });
+  if(base>100) base = 100;
+  if(bonus>15) bonus = 15;
+
+  document.getElementById('baseTotal').textContent = base;
+  document.getElementById('bonusTotal').textContent = bonus;
+  document.getElementById('grandTotal').textContent = base + bonus;
+}
+
+function expandAll(){
+  const descs = document.querySelectorAll('.expander');
+  const anyHidden = Array.from(descs).some(td=>td.classList.contains('hide-desc'));
+  descs.forEach(td=>td.classList.toggle('hide-desc', !anyHidden));
+}
+function clearScores(){
+  document.querySelectorAll('input[data-input="score"]').forEach(inp=> inp.value = 0);
+  computeTotals();
+}
+
+// collect/export
+function collectData(){
+  const meta = {
+    township: document.getElementById('fieldTownship').value.trim(),
+    bureau: document.getElementById('filterBureau').value,
+    reporter: document.getElementById('fieldReporter').value.trim(),
+    notes: document.getElementById('fieldNotes').value.trim()
+  };
+  const records = [];
+  document.querySelectorAll('#tbody tr').forEach(tr=>{
+    const id = tr.dataset.itemId;
+    const section = tr.children[0].textContent.trim();
+    const work = tr.children[1].innerText.trim();
+    const unit = tr.dataset.unit;
+    const max = parseInt(tr.dataset.max||'0',10);
+    const type = tr.dataset.type;
+    const inp = tr.querySelector('input[data-input="score"]');
+    const score = parseInt(inp.value||'0',10);
+    records.push({id, section, work, unit, type, max, score});
+  });
+  const totals = {
+    base: parseInt(document.getElementById('baseTotal').textContent,10) || 0,
+    bonus: parseInt(document.getElementById('bonusTotal').textContent,10) || 0,
+    grand: parseInt(document.getElementById('grandTotal').textContent,10) || 0
+  };
+  return {meta, records, totals, generatedAt: new Date().toISOString()};
+}
+
+// Build hidden report DOM and render to PDF (white background enforced)
+async function savePDF(){
+  const data = collectData();
+  if(!data.meta.bureau){ alert('請先選擇「評核單位（局處）」'); return; }
+  if(!data.meta.township){ alert('請先選擇「受管考單位（鄉公所）」'); return; }
+
+  const wrap = document.getElementById('reportContainer');
+  const rows = data.records.map(r=>`
+    <tr>
+      <td>${r.section}</td>
+      <td>${r.work}</td>
+      <td>${r.type==='bonus' ? '加分' : '基礎'}</td>
+      <td class="right">${r.max}</td>
+      <td class="right">${r.score}</td>
+    </tr>`).join("");
+
+  wrap.innerHTML = `
+    <div id="reportWrap" style="max-width:900px;margin:0 auto;padding:24px;background:#ffffff;color:#111;font-family:system-ui,'Noto Sans TC',Arial;">
+      <style>
+        /* Force white backgrounds and explicit borders to avoid dark blocks */
+        #reportWrap, #reportWrap * { background:#ffffff !important; color:#111 !important; border-radius:0 !important; box-shadow:none !important; }
+        #reportWrap table { border-collapse:collapse; width:100%; }
+        #reportWrap th, #reportWrap td { border:1px solid #ddd !important; padding:8px; font-size:13px; }
+        #reportWrap th { background:#f5f7fb !important; text-align:left; }
+        #reportWrap .right { text-align:right; }
+      </style>
+      <h1 style="font-size:20px;margin:0 0 4px 0;">連江縣 114 年度災害防救—評核報告（表3）</h1>
+      <div style="color:#555;font-size:12px;margin-bottom:12px;">產出時間：${new Date().toLocaleString('zh-TW')}（本報告為就所選局處之指標彙整）</div>
+      <table style="border:none;width:100%;border-collapse:separate;border-spacing:0;">
+        <tr><td style="border:none;padding:4px 0;"><b>受管考單位</b></td><td style="border:none;padding:4px 0;">${data.meta.township||""}</td></tr>
+        <tr><td style="border:none;padding:4px 0;"><b>評核單位</b></td><td style="border:none;padding:4px 0;">${data.meta.bureau||""}</td></tr>
+        <tr><td style="border:none;padding:4px 0;"><b>填報人</b></td><td style="border:none;padding:4px 0;">${data.meta.reporter||""}</td></tr>
+      </table>
+      <table style="margin-top:12px;">
+        <thead>
+          <tr>
+            <th>主項目</th>
+            <th>工作項目</th>
+            <th>性質</th>
+            <th class="right">配分</th>
+            <th class="right">得分</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+      <div style="display:flex;gap:16px;margin-top:12px;">
+        <div style="border:1px solid #ddd;border-radius:8px;padding:10px 12px;background:#fafafa;">
+          <div style="font-size:12px;color:#444;margin-bottom:4px;">基礎分（上限 100）</div>
+          <div style="font-weight:800;font-size:18px;">${data.totals.base}</div>
+        </div>
+        <div style="border:1px solid #ddd;border-radius:8px;padding:10px 12px;background:#fafafa;">
+          <div style="font-size:12px;color:#444;margin-bottom:4px;">加分（上限 15）</div>
+          <div style="font-weight:800;font-size:18px;">${data.totals.bonus}</div>
+        </div>
+        <div style="border:1px solid #ddd;border-radius:8px;padding:10px 12px;background:#fafafa;">
+          <div style="font-size:12px;color:#444;margin-bottom:4px;">合計（上限 115）</div>
+          <div style="font-weight:800;font-size:18px;">${data.totals.grand}</div>
+        </div>
+      </div>
+      <div style="margin-top:16px;">
+        <h3 style="margin:0 0 6px 0;font-size:16px;">評核建議</h3>
+        <div>${(data.meta.notes||"").replace(/</g,"&lt;").replace(/\n/g,"<br>")}</div>
+      </div>
+    </div>`;
+
+  try{
+    const { jsPDF } = window.jspdf;
+    const el = document.getElementById('reportWrap');
+    const canvas = await html2canvas(el, { scale: 2, background: '#ffffff', useCORS: true });
+    const imgData = canvas.toDataURL('image/png');
+    const pdf = new jsPDF('p','mm','a4');
+    const pageWidth = 210, pageHeight = 297, margin = 10;
+    const imgWidth = pageWidth - margin*2;
+    const imgHeight = canvas.height * imgWidth / canvas.width;
+    const ratio = canvas.width / imgWidth;
+    const innerHeight = pageHeight - margin*2;
+    if(imgHeight <= innerHeight){
+      pdf.addImage(imgData, 'PNG', margin, margin, imgWidth, imgHeight, undefined, 'FAST');
+    }else{
+      let sY = 0;
+      while(sY < canvas.height){
+        const sliceHeightPx = Math.min(innerHeight * ratio, canvas.height - sY);
+        const pageCanvas = document.createElement('canvas');
+        pageCanvas.width = canvas.width;
+        pageCanvas.height = sliceHeightPx;
+        const ctx = pageCanvas.getContext('2d');
+        ctx.drawImage(canvas, 0, sY, canvas.width, sliceHeightPx, 0, 0, canvas.width, sliceHeightPx);
+        const pageImg = pageCanvas.toDataURL('image/png');
+        if(sY > 0) pdf.addPage();
+        pdf.addImage(pageImg, 'PNG', margin, margin, imgWidth, sliceHeightPx / ratio, undefined, 'FAST');
+        sY += sliceHeightPx;
+      }
+    }
+    const safe = (s)=> (s||'').replace(/[\\\/:*?"<>|]/g,'-');
+    const fname = safe(data.meta.bureau) + '_' + safe(data.meta.township) + '.pdf';
+    pdf.save(fname);
+  } catch (e){
+    alert("PDF 生成失敗：" + e.message + "。請改用瀏覽器列印為 PDF。");
+    window.print();
+  } finally {
+    document.getElementById('reportContainer').innerHTML = "";
+  }
+}
+
+document.addEventListener('DOMContentLoaded', ()=>{
+  document.getElementById('filterBureau').addEventListener('change', buildTable);
+  document.getElementById('btnExpand').addEventListener('click', expandAll);
+  document.getElementById('btnClear').addEventListener('click', clearScores);
+  document.getElementById('btnSaveReport').addEventListener('click', savePDF);
+  buildTable();
+});
+</script>
+
+<script>
+// === Google 表單自動提交（方案A）===
+// 已填入你的 FORM_ID（來自你提供的網址）
+const FORM_ID = '1FAIpQLSce2Q9rXUmiAHHWr8lH39z3ExivmFN6T6QIKX9obnaiarCL6A';
+// 請用「預先填好連結」取得各欄位的 entry.編號，填到下方：
+
+const ENTRY = {
+  township:   'entry.474674125',   // 受管考單位 (暫配)
+  bureau:     'entry.1267336015',  // 評核單位 (暫配)
+  reporter:   'entry.719873448',   // 填報人   (暫配)
+  base:       'entry.890343290',   // 基本分合計 (暫配)
+  bonus:      'entry.1637745074',  // 加分合計 (暫配)
+  grand:      'entry.79843261',    // 總分 (暫配)
+  notes:      'entry.835693089',   // 備註 (暫配)
+  recordsJSON:'entry.1012648171'   // 明細 JSON (暫配)
+  // 若你有「上傳密鑰」欄位，也可加： secret: 'entry.REPLACE_SECRET'
+};
+
+const FORM_ACTION = `https://docs.google.com/forms/d/e/${FORM_ID}/formResponse`;
+
+// 將 records 轉為 E-1 樣式（依 section 分段，多行，以「- 項目：分數」呈現）
+function formatRecordsE1(records){
+  if(!Array.isArray(records) || records.length===0) return '';
+  const groups = {};
+  for(const r of records){
+    const sec = (r.section || '').trim() || '未分組';
+    if(!groups[sec]) groups[sec] = [];
+    groups[sec].push(r);
+  }
+  const sections = Object.keys(groups);
+  const blocks = sections.map(sec => {
+    const lines = groups[sec].map(it => {
+      const title = (it.work || it.id || '').toString().trim();
+      const score = (it.score==null ? '' : String(it.score));
+      return `- ${title}：${score}`;
+    });
+    return [sec, ...lines].join('\\n');
+  });
+  return blocks.join('\\n');
+}
+
+
+// 安全取值：避免表單「必填」欄位為空導致 Google 表單拒收
+function safeVal(v, fallback='（未填）'){
+  if (v===null || v===undefined) return fallback;
+  const s = String(v).trim();
+  return s.length ? s : fallback;
+}
+
+const UPLOAD_SECRET_VALUE = 'Matsu-2025'; // 若你的表單有密鑰欄位，這裡會送出
+
+// 如果你的頁面已有 collectData() 就會沿用；若沒有，試著從常見欄位抓值
+function __fallbackCollect(){
+  const get = sel => document.querySelector(sel)?.value?.trim() || '';
+  const getText = sel => (document.querySelector(sel)?.textContent || '').trim();
+  const base  = Number(getText('#sumBase') || 0);
+  const bonus = Number(getText('#sumBonus') || 0);
+  const grand = Number(getText('#sumGrand') || (base + bonus));
+  return {
+    meta: {
+      township: get('#selTownship') || get('[name=township]'),
+      bureau:   get('#selBureau')   || get('[name=bureau]'),
+      reporter: get('#inpReporter') || get('[name=reporter]'),
+      notes:    get('#txtNotes')    || get('[name=notes]')
+    },
+    totals: { base, bonus, grand },
+    records: [] // 若有逐題資料，建議使用你原本的 collectData() 來產生
+  };
+}
+
+async function uploadScores(){
+  const data = (typeof collectData === 'function') ? collectData() : __fallbackCollect();
+
+  // 基本檢查（最少兩個欄位，其他就算空也填上（未填）避免被表單擋）
+  if(!data?.meta?.township){ alert('請先選擇「受管考單位」'); return; }
+  if(!data?.meta?.bureau){ alert('請先選擇「評核單位」'); return; }
+
+  const payload = {
+    township:   safeVal(data.meta.township),
+    bureau:     safeVal(data.meta.bureau),
+    reporter:   safeVal(data.meta.reporter),
+    base:       String(data.totals?.base ?? '0'),
+    bonus:      String(data.totals?.bonus ?? '0'),
+    grand:      String(data.totals?.grand ?? String((Number(data.totals?.base||0)+Number(data.totals?.bonus||0)))),
+    notes:      safeVal(data.meta?.notes, ''),
+    recordsJSON: formatRecordsE1(data.records || [])
+  };
+
+  // 顯示在 console 以利除錯
+  console.log('[UploadScores] payload →', payload);
+
+  const fd = new FormData();
+  fd.append(ENTRY.township,    payload.township);
+  fd.append(ENTRY.bureau,      payload.bureau);
+  fd.append(ENTRY.reporter,    payload.reporter);
+  fd.append(ENTRY.base,        payload.base);
+  fd.append(ENTRY.bonus,       payload.bonus);
+  fd.append(ENTRY.grand,       payload.grand);
+  fd.append(ENTRY.notes,       payload.notes);
+  fd.append(ENTRY.recordsJSON, formatRecordsE1(data.records || []));
+  if(ENTRY.secret){ fd.append(ENTRY.secret, UPLOAD_SECRET_VALUE); }
+
+  const btn = document.getElementById('btnUpload');
+  const hint = document.getElementById('uploadHint');
+  if(btn) btn.disabled = true;
+  if(hint){ hint.style.display='inline'; hint.textContent='上傳中…'; }
+
+  try{
+    await fetch(FORM_ACTION, { method:'POST', mode:'no-cors', body: fd });
+    if(hint) hint.textContent='已送出（請至試算表查看）'; hint.style.display='inline';
+  }catch(err){
+    alert('上傳失敗：' + err.message);
+    if(hint) hint.textContent='上傳失敗'; hint.style.display='inline';
+  }finally{
+    if(btn) setTimeout(()=> btn.disabled=false, 800);
+  }
+}
+
+// 綁定按鈕
+document.addEventListener('DOMContentLoaded', ()=>{
+  const el = document.getElementById('btnUpload');
+  if(el) el.addEventListener('click', uploadScores);
+});
+</script>
+
+<script>
+
+// === 欄位測試：送出可辨識的測試值，方便在試算表確認欄位對應 ===
+function testUpload(){
+  const stamp = new Date().toISOString().replace(/[:.TZ-]/g,'').slice(0,14);
+  const data = {
+    meta: {
+      township: 'TEST_TOWNSHIP_' + stamp,
+      bureau:   'TEST_BUREAU_'   + stamp,
+      reporter: 'TEST_REPORTER_' + stamp,
+      notes:    'TEST_NOTES_'    + stamp
+    },
+    totals: { base: 111, bonus: 222, grand: 333 },
+    records: [{id:'t1',score:9},{id:'t2',score:8}]
+  };
+  const fd = new FormData();
+  fd.append(ENTRY.township,    data.meta.township);
+  fd.append(ENTRY.bureau,      data.meta.bureau);
+  fd.append(ENTRY.reporter,    data.meta.reporter);
+  fd.append(ENTRY.base,        String(data.totals.base));
+  fd.append(ENTRY.bonus,       String(data.totals.bonus));
+  fd.append(ENTRY.grand,       String(data.totals.grand));
+  fd.append(ENTRY.notes,       data.meta.notes);
+  fd.append(ENTRY.recordsJSON, formatRecordsE1(data.records));
+  if(ENTRY.secret){ fd.append(ENTRY.secret, UPLOAD_SECRET_VALUE); }
+
+  const hint = document.getElementById('uploadHint');
+  if(hint){ hint.style.display='inline'; hint.textContent='測試上傳中…'; }
+  fetch(FORM_ACTION, { method:'POST', mode:'no-cors', body: fd })
+    .then(()=>{ if(hint){ hint.textContent='測試已送出 → 到試算表看哪一欄收到對應值'; }})
+    .catch(e=>{ alert('測試失敗：'+e.message); if(hint){ hint.textContent='測試失敗'; }});
+}
+
+document.addEventListener('DOMContentLoaded', ()=>{
+  const t = document.getElementById('btnTestUpload');
+  if(t) t.addEventListener('click', testUpload);
+});
+
+</script>
+</body>
+</html>
